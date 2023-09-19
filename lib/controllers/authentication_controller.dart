@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:taskit/models/user_models.dart';
 import 'package:taskit/views/home_page.dart';
 
 class AuthenticationController extends GetxController {
-  final pb = PocketBase('http://10.0.2.2:8090');
+  final pb = PocketBase('https://taskit.pockethost.io');
   Rx<Users?> currentUser = Rx<Users?>(null).obs.value;
 
   Future<void> signIn(String email, String password) async {
@@ -20,11 +21,12 @@ class AuthenticationController extends GetxController {
         'Sign-in successful!',
         snackPosition: SnackPosition.BOTTOM,
       );
-      Get.to(const HomePage());
+      Get.to(HomePage());
     } catch (error) {
+      debugPrint(pb.authStore.model.id.toString());
       Get.snackbar(
         'Error',
-        'Sign-in failed. Please try again!',
+        'Sign-in failed. Please try again! $error',
         snackPosition: SnackPosition.BOTTOM,
       );
     }

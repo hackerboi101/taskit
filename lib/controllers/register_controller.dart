@@ -1,3 +1,5 @@
+import 'package:taskit/controllers/authentication_controller.dart';
+import 'package:taskit/models/user_models.dart';
 import 'package:taskit/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,8 +20,12 @@ class RegisterController extends GetxController {
   final RxInt contributionSuccessCount = 0.obs;
 
   final CountryController countryController = Get.put(CountryController());
+  final AuthenticationController authController =
+      Get.put(AuthenticationController());
 
-  final pb = PocketBase('http://10.0.2.2:8090');
+  final pb = PocketBase('https://taskit.pockethost.io');
+
+  final RxString id = ''.obs;
 
   String? _phoneNumber; // Store the phoneNumber as a class-level variable
 
@@ -35,7 +41,14 @@ class RegisterController extends GetxController {
         "number": _phoneNumber,
       };
 
-      await pb.collection('users').create(body: body);
+      final RecordModel record =
+          await pb.collection('users').create(body: body);
+      id.value = record.id.toString();
+      debugPrint(id.value);
+
+      final result = await pb.collection('users').getOne(id.value);
+      final user = Users.fromPocketbase(result.data);
+      authController.currentUser.value = user;
     } catch (e) {
       Get.snackbar(
         'Error',
@@ -67,7 +80,7 @@ class RegisterController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
 
-      Get.to(() => const HomePage());
+      Get.to(() => HomePage());
     } catch (e) {
       Get.snackbar(
         'Error',

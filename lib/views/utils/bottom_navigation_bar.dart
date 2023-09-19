@@ -10,7 +10,7 @@ class BottomNavigationController extends GetxController {
   void onItemTapped(int index) {
     selectedIndex.value = index;
     if (index == 0) {
-      Get.to(const HomePage());
+      Get.to(HomePage());
     } else if (index == 1) {
       Get.to(const MyTasksPage());
     } else if (index == 2) {
@@ -23,7 +23,7 @@ class BottomNavigation extends StatelessWidget {
   final BottomNavigationController controller =
       Get.put(BottomNavigationController());
 
-  BottomNavigation({required Key key}) : super(key: key);
+  BottomNavigation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
