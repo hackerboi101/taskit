@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taskit/controllers/country_controller.dart';
 import 'package:taskit/controllers/register_controller.dart';
+import 'package:taskit/views/home_page.dart';
 import 'package:taskit/views/login_page.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -389,8 +390,14 @@ class RegisterPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    registerController.signUp();
+                  onPressed: () async {
+                    await registerController.signUp();
+                    Future.delayed(
+                      const Duration(seconds: 1),
+                      () {
+                        Get.to(HomePage());
+                      },
+                    );
                   },
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.white),

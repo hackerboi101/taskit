@@ -122,8 +122,8 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    authController.signIn(
+                  onPressed: () async {
+                    await authController.signIn(
                       emailController.text,
                       passwordController.text,
                     );

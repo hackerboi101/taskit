@@ -1,6 +1,5 @@
 import 'package:taskit/controllers/authentication_controller.dart';
 import 'package:taskit/models/user_models.dart';
-import 'package:taskit/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taskit/controllers/country_controller.dart';
@@ -14,10 +13,6 @@ class RegisterController extends GetxController {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  final RxBool agreeToTerms = false.obs;
-  final RxInt rewardPoint = 0.obs;
-  final RxInt cash = 0.obs;
-  final RxInt contributionSuccessCount = 0.obs;
 
   final CountryController countryController = Get.put(CountryController());
   final AuthenticationController authController =
@@ -34,7 +29,7 @@ class RegisterController extends GetxController {
       final body = <String, dynamic>{
         "username": userNameController.text,
         "email": emailController.text,
-        "emailVisibility": false,
+        "emailVisibility": true,
         "password": passwordController.text,
         "passwordConfirm": confirmPasswordController.text,
         "name": nameController.text,
@@ -43,11 +38,8 @@ class RegisterController extends GetxController {
 
       final RecordModel record =
           await pb.collection('users').create(body: body);
-      id.value = record.id.toString();
-      debugPrint(id.value);
 
-      final result = await pb.collection('users').getOne(id.value);
-      final user = Users.fromPocketbase(result.data);
+      final user = Users.fromPocketbase(record.data);
       authController.currentUser.value = user;
     } catch (e) {
       Get.snackbar(
@@ -79,8 +71,6 @@ class RegisterController extends GetxController {
         'Sign-up successful!',
         snackPosition: SnackPosition.BOTTOM,
       );
-
-      Get.to(() => HomePage());
     } catch (e) {
       Get.snackbar(
         'Error',

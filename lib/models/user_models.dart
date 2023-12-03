@@ -21,14 +21,14 @@ class Users {
 
   factory Users.fromPocketbase(Map<String, dynamic> data) {
     return Users(
-      id: data['id'],
-      userName: data['username'],
-      name: data['name'],
-      email: data['email'],
+      id: data['id'] ?? '',
+      userName: data['username'] ?? '',
+      name: data['name'] ?? '',
+      email: data['email'] ?? '',
       phoneNumber: data['number'].toString(),
       avatar: data['avatar'] ?? '',
-      emailVisibility: data['emailVisibility'],
-      verified: data['verified'],
+      emailVisibility: data['emailVisibility'] ?? true,
+      verified: data['verified'] ?? false,
     );
   }
 }
